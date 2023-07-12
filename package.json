@@ -24,7 +24,8 @@
     "rc-tree": "^5.7.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-redux": "^8.1.1"
+    "react-redux": "^8.1.1",
+    "react-resizable-panels": "^0.0.53"
   },
   "devDependencies": {
     "@types/node": "^20.4.0",

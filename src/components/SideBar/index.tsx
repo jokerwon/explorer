@@ -23,13 +23,6 @@ enum Command {
   RENAME,
 }
 
-const menus: MenuItem[] = [
-  { key: Command.NEW_FILE, title: 'New File', icon: <NewFile /> },
-  { key: Command.NEW_FOLDER, title: 'New Folder', icon: <NewFolder /> },
-  { key: Command.UNLINK, title: 'Delete', icon: <Delete /> },
-  { key: Command.RENAME, title: 'Rename', icon: <Edit /> },
-]
-
 export default function SideBar() {
   const [notice, holder] = useNotification({
     motion: {
@@ -130,41 +123,39 @@ export default function SideBar() {
   const treeRender = (data: FileSystemEntry[]) =>
     data.map((item: FileSystemEntry) => {
       const { isDraft, key, name, isDirectory } = item
-      if (isDraft) {
-        return <TreeNode key={key} icon={isDirectory ? <DirectoryIcon /> : getFileIcon()} title={<Input defaultValue={name} autoFocus onBlur={handleBlur} onEnterPress={handleNameSubmit} />} />
-      }
+      const title = !isDraft ? name : <Input defaultValue={name} autoFocus onBlur={handleBlur} onEnterPress={handleNameSubmit} />
       const isFocus = item.key === active.key
       const className = classnames(['hover:bg-gray-200', { 'bg-gray-200': isFocus }])
       if (isDirectory && (item as Directory).children) {
         return (
-          <TreeNode key={key} className={className} title={name} icon={<DirectoryIcon />} data={item as { key: string }}>
+          <TreeNode key={key} className={className} title={title} icon={<DirectoryIcon />} data={item as { key: string }}>
             {treeRender((item as Directory).children)}
           </TreeNode>
         )
       }
-      return <TreeNode key={key} className={className} title={name} data={item as { key: string }} icon={getFileIcon((item as File).type)} />
+      return <TreeNode key={key} className={className} title={title} data={item as { key: string }} icon={getFileIcon((item as File).type)} />
     })
   const treeNodes = treeRender(tree)
+  const menus: MenuItem[] = [
+    { key: Command.NEW_FILE, title: 'New File', icon: <NewFile /> },
+    { key: Command.NEW_FOLDER, title: 'New Folder', icon: <NewFolder /> },
+    { key: Command.RENAME, title: 'Rename', icon: <Edit /> },
+  ]
+  if (!(active as Directory).isRoot) {
+    menus.push({ key: Command.UNLINK, title: 'Delete', icon: <Delete /> })
+  }
 
   return (
-    <aside className="w-1/4 h-full border-1 border-gray-400 border-solid resize-x">
-      <header className="flex justify-between items-center px-4 py-2">
+    <aside className="w-full h-full">
+      <header className="flex justify-between items-center px-2 py-2">
         <span className="uppercase">Explorer</span>
         <Dropdown trigger={['click']} overlay={<Menu menus={menus} onCommand={handleCommand} />} animation="slide-up">
           <div className="p-[2px] rounded-1 text-xl cursor-pointer hover:bg-gray-200">
             <div className="i-carbon:overflow-menu-horizontal" />
           </div>
         </Dropdown>
-        {/* <div className="flex">
-          <div className="p-[2px] rounded-1 text-xl cursor-pointer hover:bg-gray-200">
-            <div className="i-carbon:document-add" onClick={handleAdd.bind(null, EntryType.FILE)}></div>
-          </div>
-          <div className="ml-2 p-[2px] rounded-1 text-xl cursor-pointer hover:bg-gray-200">
-            <div className="i-carbon:folder-add" onClick={handleAdd.bind(null, EntryType.DIRECTORY)}></div>
-          </div>
-        </div> */}
       </header>
-      <div className="p-2">
+      <div>
         <Tree
           showLine
           selectable={false}

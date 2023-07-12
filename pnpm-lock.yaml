@@ -27,6 +27,7 @@ specifiers:
   react: ^18.2.0
   react-dom: ^18.2.0
   react-redux: ^8.1.1
+  react-resizable-panels: ^0.0.53
   typescript: ^5.0.2
   unocss: ^0.53.4
   vite: ^4.3.9
@@ -47,6 +48,7 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-redux: 8.1.1_hrrtw4it2dqo6rzcqzvl36ff7i
+  react-resizable-panels: 0.0.53_biqbaboplfbrettd7655fr4n2y
 
 devDependencies:
   '@types/node': 20.4.0
@@ -2381,6 +2383,16 @@ packages:
     resolution: {integrity: sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /react-resizable-panels/0.0.53_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-lGOJF0Hh5+Y+Usi7x8btmBTi+6CQV1/RKxnj6jVrzvJ9vLbftbSoJPzymOuX8ZCFimlEwP2AKsGtQVKG/KieHA==}
+    peerDependencies:
+      react: ^16.14.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}

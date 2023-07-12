@@ -31,5 +31,5 @@ export default function Input({ keepfocus, onEnterPress, ...props }: InputProps)
     props.onBlur?.(e)
   }
 
-  return <input autoFocus={keepfocus} ref={ref} {...props} onKeyUp={onKeyUp} onBlur={onBlur} />
+  return <input className="text-[16px] outline-none border-[1px] border-solid border-gray-200" autoFocus={keepfocus} ref={ref} {...props} onKeyUp={onKeyUp} onBlur={onBlur} />
 }
