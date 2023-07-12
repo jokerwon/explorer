@@ -6,6 +6,9 @@ export const NewFolder = () => <div className="i-carbon:folder-add" />
 export const Delete = () => <div className="i-carbon:trash-can" />
 export const Edit = () => <div className="i-carbon:edit" />
 
+export const RightArrow = () => <div className="i-carbon:chevron-right" />
+export const DownArrow = () => <div className="i-carbon:chevron-down" />
+
 const fileIconMap: Record<string, any> = {
   ts: <Typescript />,
 }

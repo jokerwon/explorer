@@ -9,7 +9,7 @@ import { RootState } from '@/store'
 import { startCreate, exitDraft, focus, finishDraft, deleteEntry, enterDraft, paste, copy } from '@/store/global'
 import Input from './Input'
 import Menu, { MenuItem } from './Menu'
-import { Delete, Directory as DirectoryIcon, Edit, NewFile, NewFolder, getFileIcon } from '../Icon'
+import { Delete, Directory as DirectoryIcon, DownArrow, Edit, NewFile, NewFolder, RightArrow, getFileIcon } from '../Icon'
 
 import 'rc-notification/assets/index.css'
 import 'rc-dropdown/assets/index.css'
@@ -125,7 +125,7 @@ export default function SideBar() {
       const { isDraft, key, name, isDirectory } = item
       const title = !isDraft ? name : <Input defaultValue={name} autoFocus onBlur={handleBlur} onEnterPress={handleNameSubmit} />
       const isFocus = item.key === active.key
-      const className = classnames(['hover:bg-gray-200', { 'bg-gray-200': isFocus }])
+      const className = classnames(['select-none', 'hover:bg-gray-200', { 'bg-gray-200': isFocus }])
       if (isDirectory && (item as Directory).children) {
         return (
           <TreeNode key={key} className={className} title={title} icon={<DirectoryIcon />} data={item as { key: string }}>
@@ -158,6 +158,12 @@ export default function SideBar() {
       <div>
         <Tree
           showLine
+          switcherIcon={({ expanded, isLeaf }) => {
+            if (isLeaf) {
+              return null
+            }
+            return expanded ? <DownArrow /> : <RightArrow />
+          }}
           selectable={false}
           expandedKeys={expanded}
           expandAction="click"
