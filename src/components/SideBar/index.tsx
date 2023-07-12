@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import classnames from 'classnames'
-import Tree, { TreeNode } from 'rc-tree'
-
 import Dropdown from 'rc-dropdown'
+import { useNotification } from 'rc-notification'
+import Tree, { TreeNode } from 'rc-tree'
 import { Directory, EntryType, File, FileSystemEntry } from '@/types'
 import { RootState } from '@/store'
 import { startCreate, exitDraft, focus, finishDraft, deleteEntry, enterDraft, paste, copy } from '@/store/global'
@@ -11,7 +11,9 @@ import Input from './Input'
 import Menu, { MenuItem } from './Menu'
 import { Delete, Directory as DirectoryIcon, Edit, NewFile, NewFolder, getFileIcon } from '../Icon'
 
+import 'rc-notification/assets/index.css'
 import 'rc-dropdown/assets/index.css'
+import 'rc-tree/assets/index.css'
 import './index.less'
 
 enum Command {
@@ -29,6 +31,19 @@ const menus: MenuItem[] = [
 ]
 
 export default function SideBar() {
+  const [notice, holder] = useNotification({
+    motion: {
+      motionName: 'rc-notification-fade',
+      motionAppear: true,
+      motionEnter: true,
+      motionLeave: true,
+      onLeaveStart: (ele: any) => {
+        const { offsetHeight } = ele
+        return { height: offsetHeight }
+      },
+      onLeaveActive: () => ({ height: 0, opacity: 0, margin: 0 }),
+    },
+  })
   const dispatch = useDispatch()
   const [expanded, setExpanded] = useState<string[]>([])
   const { tree = [], active, pendingKey } = useSelector((state: RootState) => state.global)
@@ -56,11 +71,18 @@ export default function SideBar() {
   }
   const handleNameSubmit = (e: any) => {
     if (e.target.value) {
-      dispatch(finishDraft(e.target.value))
+      try {
+        dispatch(finishDraft(e.target.value))
+      } catch (error) {
+        notice.open({
+          content: (error as Error).message,
+          duration: 3,
+        })
+      }
     }
   }
   const handleCommand = ({ key }: any) => {
-    switch (key) {
+    switch (Number(key)) {
       case Command.NEW_FILE:
         handleAdd(EntryType.FILE)
         break
@@ -156,6 +178,7 @@ export default function SideBar() {
           {treeNodes}
         </Tree>
       </div>
+      {holder}
     </aside>
   )
 }

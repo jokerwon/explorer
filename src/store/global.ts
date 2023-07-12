@@ -89,8 +89,7 @@ export const globalSlice = createSlice({
       if (!(target as Directory).isRoot) {
         const parent = findNode(state.tree, target.pKey!) as Directory
         if (parent!.children.some((f) => f.name === payload && ((target.isFile && f.isFile) || (target.isDirectory && f.isDirectory)))) {
-          console.error('same name')
-          return
+          throw new Error(`The file or folder ${payload} already exists in this location. Please select a different name.`)
         }
       }
       target.name = payload
